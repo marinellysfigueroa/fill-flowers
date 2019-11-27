@@ -1,0 +1,40 @@
+<ion-header>
+    <img src="/assets/img/logo.png" alt="logo">
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Bienvenido</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="ion-padding">
+    <ion-card>
+        
+        <ion-card-header>
+          
+          <ion-card-title>Carga de Archivos</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-icon name="archive"></ion-icon>
+            Haga click en la siguiente funcionalidad para desgargar la base de datos del servidor.
+            <br>
+            <ion-button (click)="register()" color="primary" shape="round">Download</ion-button>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+          
+          <ion-card-header>
+            
+            <ion-card-title>Informe de inventario</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              <ion-icon name="stats"></ion-icon>
+              Para visualizar el Informe de inventario, haga click en la siguiente funcionalidad.
+              <br>
+            <ion-button (click)="register()" color="primary" shape="round">Ir</ion-button>
+          </ion-card-content>
+        </ion-card>
+</ion-content>
