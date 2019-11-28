@@ -16,4 +16,12 @@ export class DashboardPage implements OnInit {
   logout() {
     this.authService.logout();
   }
+  download()
+  {
+    console.log("Downloading...");
+  }
+  inform()
+  {
+    console.log("Going to inform module...");
+  }
 }
