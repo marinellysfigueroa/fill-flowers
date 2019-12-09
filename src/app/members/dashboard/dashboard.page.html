@@ -86,4 +86,32 @@
               </ion-col>
             </ion-row>
           </ion-grid>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">id_inventario</th>
+                <th scope="col">cod_malla</th>
+                <th scope="col">codigo_variedad</th>
+                <th scope="col">fecha_calidad</th>
+                <th scope="col">numero_tallos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of inventoryData">
+                <td>{{ item.id_inventario }}</td>
+                <td>{{ item.cod_malla }}</td>
+                <td>{{ item.codigo_variedad }}</td>
+                <td>{{ item.numero_tallos }}</td>
+                <td style="display: flex">
+                  <ion-button color="warning" size="small" routerLink='/edit/{{item.id}}'>
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                  <ion-button color="danger" size="small" (click)="delete(item)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 </ion-content>

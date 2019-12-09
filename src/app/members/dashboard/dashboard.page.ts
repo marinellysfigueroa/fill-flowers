@@ -2,6 +2,7 @@ import { AuthenticationService } from './../../services/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Platform } from '@ionic/angular';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,13 +11,16 @@ import { Platform } from '@ionic/angular';
 })
 export class DashboardPage implements OnInit {
 
+  inventoryData: any;
   databaseObj: SQLiteObject; // Database instance object
   name_model:string = ""; // Input field model
   row_data: any = []; // Table rows
   readonly database_name:string = "freaky_datatable.db"; // DB name
   readonly table_name:string = "myfreakytable"; // 
 
-  constructor(private platform: Platform,private authService: AuthenticationService,private sqlite: SQLite) { 
+  constructor(private platform: Platform,private authService: AuthenticationService,
+    private sqlite: SQLite,public apiService: ApiService) { 
+    this.inventoryData = [];
     this.platform.ready().then(() => {
       this.createDB();
     }).catch(error => {
@@ -27,6 +31,15 @@ export class DashboardPage implements OnInit {
   
 
   ngOnInit() {
+    this.getInventory();
+  }
+
+  getInventory() {
+    //Get saved list of students
+    this.apiService.getList().subscribe(response => {
+      console.log(response);
+      this.inventoryData = response;
+    })
   }
 
   logout() {
