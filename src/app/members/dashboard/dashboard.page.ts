@@ -15,29 +15,31 @@ export class DashboardPage implements OnInit {
   databaseObj: SQLiteObject; // Database instance object
   name_model:string = ""; // Input field model
   row_data: any = []; // Table rows
-  readonly database_name:string = "freaky_datatable.db"; // DB name
-  readonly table_name:string = "myfreakytable"; // 
+  readonly database_name:string = "fillcoflowers.db"; // DB name
+  readonly table_name:string = "inventory"; // 
 
   constructor(private platform: Platform,private authService: AuthenticationService,
     private sqlite: SQLite,public apiService: ApiService) { 
     this.inventoryData = [];
+/*
     this.platform.ready().then(() => {
       this.createDB();
     }).catch(error => {
       console.log(error);
     })
+    */
+
   }
 
   
 
   ngOnInit() {
-    this.getInventory();
+    //this.getInventory();
   }
 
   getInventory() {
-    //Get saved list of students
+    
     this.apiService.getList().subscribe(response => {
-      console.log(response);
       this.inventoryData = response;
     })
   }
@@ -48,6 +50,9 @@ export class DashboardPage implements OnInit {
   download()
   {
     console.log("Downloading...");
+    this.createDB() ;
+    this.createTable() ;
+    this.insertAll();
   }
   inform()
   {
@@ -60,14 +65,14 @@ export class DashboardPage implements OnInit {
     })
       .then((db: SQLiteObject) => {
         this.databaseObj = db;
-        alert('freaky_datatable Database Created!');
+        alert(this.database_name +' Database Created!');
       })
       .catch(e => {
         alert("error " + JSON.stringify(e))
       });
   }
   createTable() {
-    this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_name + ' (pid INTEGER PRIMARY KEY, Name varchar(255))', [])
+    this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_name + ' (cod_malla varchar(255),codigo_variedad varchar(255),numero_tallos varchar(255),cod_bloque varchar(255))', [])
       .then(() => {
         alert('Table Created!');
       })
@@ -75,12 +80,22 @@ export class DashboardPage implements OnInit {
         alert("error " + JSON.stringify(e))
       });
   }
-  insertRow() {
-    if (!this.name_model.length) {
-      alert("Enter Name");
-      return;
-    }
-    this.databaseObj.executeSql('INSERT INTO ' + this.table_name + ' (Name) VALUES ("' + this.name_model + '")', [])
+  
+  insertAll() {
+
+    this.apiService.getList().subscribe(response => {
+      this.inventoryData = response;
+    })
+    
+    for (var i = 0; i < this.inventoryData.length; i++) {
+      var cod_malla=this.inventoryData.data.item(i).cod_malla;
+      var codigo_variedad=this.inventoryData.data.item(i).codigo_variedad;
+      var numero_tallos=this.inventoryData.data.item(i).numero_tallos;
+      var cod_bloque=this.inventoryData.data.item(i).cod_bloque;
+      
+      console.log(cod_malla+' '+codigo_variedad+' '+numero_tallos+' '+cod_bloque);
+
+      this.databaseObj.executeSql('INSERT INTO ' + this.table_name + ' (cod_malla,codigo_variedad,numero_tallos,cod_bloque) VALUES ("' + cod_malla + '","' + codigo_variedad + '","' + numero_tallos + '","' + cod_bloque + '")', [])
       .then(() => {
         alert('Row Inserted!');
         this.getRows();
@@ -88,6 +103,10 @@ export class DashboardPage implements OnInit {
       .catch(e => {
         alert("error " + JSON.stringify(e))
       });
+
+    }
+    
+    
   }
   getRows() {
     this.databaseObj.executeSql("SELECT * FROM " + this.table_name, [])
@@ -103,14 +122,5 @@ export class DashboardPage implements OnInit {
         alert("error " + JSON.stringify(e))
       });
   }
-  deleteRow(item) {
-    this.databaseObj.executeSql("DELETE FROM " + this.table_name + " WHERE pid = " + item.pid, [])
-      .then((res) => {
-        alert("Row Deleted!");
-        this.getRows();
-      })
-      .catch(e => {
-        alert("error " + JSON.stringify(e))
-      });
-  }
+  
 }

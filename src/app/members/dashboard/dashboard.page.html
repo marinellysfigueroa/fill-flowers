@@ -1,5 +1,5 @@
 <ion-header>
-    <img src="/assets/img/logo.png" alt="logo">
+  <img src="/assets/img/logo.png" alt="logo">
   <ion-toolbar color="tertiary">
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
@@ -9,109 +9,54 @@
     <ion-title>Bienvenido</ion-title>
   </ion-toolbar>
 </ion-header>
- 
 <ion-content class="ion-padding">
-    <ion-card>
-        
-        <ion-card-header>
-          
-          <ion-card-title>Carga de Archivos</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-            <ion-icon name="archive"></ion-icon>
-            Haga click en la siguiente funcionalidad para desgargar la base de datos del servidor.
-            <br>
-            <ion-button (click)="download()" color="primary" shape="round">Download</ion-button>
-        </ion-card-content>
-      </ion-card>
-      <ion-card>
-          
-          <ion-card-header>
-            
-            <ion-card-title>Informe de producción</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-              <ion-icon name="stats"></ion-icon>
-              Para visualizar el Informe de inventario, haga click en la siguiente funcionalidad.
-              <br>
-            <ion-button (click)="inform()" color="primary" shape="round">Ir</ion-button>
-          </ion-card-content>
-        </ion-card>
-
-        <ion-button expand="block" (click)="createDB()">
-            Create DataBase
-          </ion-button>
-         
-          <ion-button expand="block" (click)="createTable()">
-            Create Table
-          </ion-button>
-         
-          <ion-button expand="block" (click)="getRows()">
-            Get Rows
-          </ion-button>
-         
-         
-          <ion-item-divider>
-            <ion-input placeholder="Enter Name" [(ngModel)]="name_model"></ion-input>
-            <ion-button expand="block" (click)="insertRow()">
-              Insert Row
-            </ion-button>
-          </ion-item-divider>
-         
-         
-         
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                Row ID
-              </ion-col>
-              <ion-col>
-                Name
-              </ion-col>
-              <ion-col>
-                Delete
-              </ion-col>
-            </ion-row>
-            <ion-row *ngFor="let item of row_data">
-              <ion-col>
-                {{item.pid}}
-              </ion-col>
-              <ion-col>
-                {{item.Name}}
-              </ion-col>
-              <ion-col>
-                <ion-button (click)="deleteRow(item)" size="small" color="danger">
-                  <ion-icon name="trash"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">id_inventario</th>
-                <th scope="col">cod_malla</th>
-                <th scope="col">codigo_variedad</th>
-                <th scope="col">fecha_calidad</th>
-                <th scope="col">numero_tallos</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of inventoryData">
-                <td>{{ item.id_inventario }}</td>
-                <td>{{ item.cod_malla }}</td>
-                <td>{{ item.codigo_variedad }}</td>
-                <td>{{ item.numero_tallos }}</td>
-                <td style="display: flex">
-                  <ion-button color="warning" size="small" routerLink='/edit/{{item.id}}'>
-                    <ion-icon name="create"></ion-icon>
-                  </ion-button>
-                  <ion-button color="danger" size="small" (click)="delete(item)">
-                    <ion-icon name="trash"></ion-icon>
-                  </ion-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Carga de Archivos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-icon name="archive"></ion-icon>
+      Haga click en la siguiente funcionalidad para desgargar la base de datos del servidor.
+      <br>
+      <ion-button (click)="download()" color="primary" shape="round">Download</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informe de producción</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-icon name="stats"></ion-icon>
+      Para visualizar el Informe de inventario, haga click en la siguiente funcionalidad.
+      <br>
+      <ion-button (click)="inform()" color="primary" shape="round">Ir</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" (click)="createDB()">
+    Create DataBase
+  </ion-button>
+  <ion-button expand="block" (click)="createTable()">
+    Create Table
+  </ion-button>
+  <ion-button expand="block" (click)="getRows()">
+    Get Rows
+  </ion-button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">cod_malla</th>
+        <th scope="col">codigo_variedad</th>
+        <th scope="col">codigo_bloque</th>
+        <th scope="col">numero_tallos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of inventoryData.data">
+        <td>{{ item.cod_malla }}</td>
+        <td>{{ item.codigo_variedad }}</td>
+        <td>{{ item.cod_bloque }}</td>
+        <td>{{ item.numero_tallos }}</td>
+      </tr>
+    </tbody>
+  </table>
 </ion-content>
