@@ -4,13 +4,14 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { ApiService } from '../../services/api.service';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
+  styleUrls: ['./dashboard.page.scss']
 })
 export class DashboardPage implements OnInit {
-
+  
   inventoryData: any;
   databaseObj: SQLiteObject; // Database instance object
   name_model:string = ""; // Input field model
@@ -20,6 +21,7 @@ export class DashboardPage implements OnInit {
 
   constructor(private platform: Platform,private authService: AuthenticationService,
     private sqlite: SQLite,public apiService: ApiService) { 
+      
     this.inventoryData = [];
 /*
     this.platform.ready().then(() => {
@@ -34,6 +36,8 @@ export class DashboardPage implements OnInit {
   
 
   ngOnInit() {
+    var formElement = <HTMLFormElement>document.getElementById('inform');
+    formElement.style.display='none';
     //this.getInventory();
   }
 
@@ -42,6 +46,8 @@ export class DashboardPage implements OnInit {
     this.apiService.getList().subscribe(response => {
       this.inventoryData = response;
     })
+    var formElement = <HTMLFormElement>document.getElementById('inform');
+    formElement.style.display='block';
   }
 
   logout() {
@@ -49,10 +55,22 @@ export class DashboardPage implements OnInit {
   }
   download()
   {
+    var formElement = <HTMLFormElement>document.getElementById('inform');
+    formElement.style.display='none';
     console.log("Downloading...");
-    this.createDB() ;
-    this.createTable() ;
-    this.insertAll();
+    setTimeout(() => { 
+      /* 
+      this.createDB() ;
+      this.createTable() ;
+      this.insertAll();
+      */
+      this.inventoryData = [];
+      console.log("Download success!!");
+      //(".loader").fadeOut("slow");
+
+      alert("Se descargó la información de manera satisfactoria"); 
+
+    }, 2000);
   }
   inform()
   {

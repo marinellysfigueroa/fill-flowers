@@ -15,6 +15,7 @@ export class DeveloperPage implements OnInit {
   constructor(private route: ActivatedRoute, private db: DatabaseService, private router: Router, private toast: ToastController) { }
  
   ngOnInit() {
+    /*
     this.route.paramMap.subscribe(params => {
       let devId = params.get('id');
  
@@ -23,25 +24,6 @@ export class DeveloperPage implements OnInit {
         this.skills = this.developer.skills.join(',');
       });
     });
-  }
- 
-  delete() {
-    this.db.deleteDeveloper(this.developer.id).then(() => {
-      this.router.navigateByUrl('/');
-    });
-  }
- 
-  updateDeveloper() {
-    let skills = this.skills.split(',');
-    skills = skills.map(skill => skill.trim());
-    this.developer.skills = skills;
- 
-    this.db.updateDeveloper(this.developer).then(async (res) => {
-      let toast = await this.toast.create({
-        message: 'Developer updated',
-        duration: 3000
-      });
-      toast.present();
-    });
+    */
   }
 }

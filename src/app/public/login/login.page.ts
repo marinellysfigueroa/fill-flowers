@@ -13,6 +13,8 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
   login() {
+    var formElement = <HTMLFormElement>document.getElementById('inform');
+    formElement.style.display='none';
     console.log("iniciando sesión");
     this.authService.login();
   }

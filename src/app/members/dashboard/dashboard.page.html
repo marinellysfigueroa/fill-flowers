@@ -16,9 +16,10 @@
     </ion-card-header>
     <ion-card-content>
       <ion-icon name="archive"></ion-icon>
-      Haga click en la siguiente funcionalidad para desgargar la base de datos del servidor.
+      Haga click en la siguiente funcionalidad para descargar la base de datos del servidor.
       <br>
       <ion-button (click)="download()" color="primary" shape="round">Download</ion-button>
+      <div class="loader"></div>
     </ion-card-content>
   </ion-card>
   <ion-card>
@@ -27,36 +28,31 @@
     </ion-card-header>
     <ion-card-content>
       <ion-icon name="stats"></ion-icon>
-      Para visualizar el Informe de inventario, haga click en la siguiente funcionalidad.
+      Para visualizar el Informe de producción, haga click en la siguiente funcionalidad.
       <br>
-      <ion-button (click)="inform()" color="primary" shape="round">Ir</ion-button>
+      <ion-button (click)="getInventory()" color="primary" shape="round">Ver</ion-button>
     </ion-card-content>
   </ion-card>
-  <ion-button expand="block" (click)="createDB()">
-    Create DataBase
-  </ion-button>
-  <ion-button expand="block" (click)="createTable()">
-    Create Table
-  </ion-button>
-  <ion-button expand="block" (click)="getRows()">
-    Get Rows
-  </ion-button>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">cod_malla</th>
-        <th scope="col">codigo_variedad</th>
-        <th scope="col">codigo_bloque</th>
-        <th scope="col">numero_tallos</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of inventoryData.data">
-        <td>{{ item.cod_malla }}</td>
-        <td>{{ item.codigo_variedad }}</td>
-        <td>{{ item.cod_bloque }}</td>
-        <td>{{ item.numero_tallos }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <ion-card>
+    <table class="table" id="inform" style="display:none"> 
+      <thead>
+        <tr>
+          <th scope="col">Código de malla</th>
+          <th scope="col">Código de variedad</th>
+          <th scope="col">Código de bloque</th>
+          <th scope="col">Cantidad de tallos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of inventoryData.data">
+          <td>{{ item.cod_malla }}</td>
+          <td>{{ item.codigo_variedad }}</td>
+          <td>{{ item.cod_bloque }}</td>
+          <td>{{ item.numero_tallos }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-card>
+ 
+  
 </ion-content>

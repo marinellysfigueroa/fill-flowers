@@ -23,6 +23,7 @@ export class DatabaseService {
   products = new BehaviorSubject([]);
  
   constructor(private plt: Platform, private sqlitePorter: SQLitePorter, private sqlite: SQLite, private http: HttpClient) {
+/*
     this.plt.ready().then(() => {
       this.sqlite.create({
         name: 'developers.db',
@@ -33,6 +34,7 @@ export class DatabaseService {
           this.seedDatabase();
       });
     });
+*/
   }
  
   seedDatabase() {
@@ -104,21 +106,6 @@ export class DatabaseService {
       }
     });
   }
- 
-  deleteDeveloper(id) {
-    return this.database.executeSql('DELETE FROM developer WHERE id = ?', [id]).then(_ => {
-      this.loadDevelopers();
-      this.loadProducts();
-    });
-  }
- 
-  updateDeveloper(dev: Dev) {
-    let data = [dev.name, JSON.stringify(dev.skills), dev.img];
-    return this.database.executeSql(`UPDATE developer SET name = ?, skills = ?, img = ? WHERE id = ${dev.id}`, data).then(data => {
-      this.loadDevelopers();
-    })
-  }
- 
   loadProducts() {
     let query = 'SELECT product.name, product.id, developer.name AS creator FROM product JOIN developer ON developer.id = product.creatorId';
     return this.database.executeSql(query, []).then(data => {
