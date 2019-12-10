@@ -37,18 +37,21 @@
     <table class="table" id="inform" style="display:none"> 
       <thead>
         <tr>
-          <th scope="col">Código de malla</th>
+          <th scope="col">Fecha granel</th>
           <th scope="col">Código de variedad</th>
-          <th scope="col">Código de bloque</th>
           <th scope="col">Cantidad de tallos</th>
+          <th scope="col">Grado</th>
+          <th scope="col">Código de bloque</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of inventoryData.data">
-          <td>{{ item.cod_malla }}</td>
+          <td>{{ item.fecha_granel }}</td>
           <td>{{ item.codigo_variedad }}</td>
-          <td>{{ item.cod_bloque }}</td>
           <td>{{ item.numero_tallos }}</td>
+          <td>{{ item.grado }}</td>
+          <td>{{ item.cod_bloque }}</td>
+
         </tr>
       </tbody>
     </table>
