@@ -17,30 +17,40 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">Bloque</th>
-        <th scope="col">Variedad</th>
-        <th scope="col">Fecha Incio</th>
-        <th scope="col">Fecha fin</th>
+        <th scope="col">BLOQUE</th>
+        <th scope="col">VARIEDAD</th>
+        <th scope="col">FECHA DESDE</th>
+        <th scope="col">FECHA HASTA</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <th><select class="form-control">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select></th>
-        <td><select class="form-control">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select></td>
-        <td></td>
-        <td></td>
+        <td>
+          <select
+                  name="codigo_bloque"
+                  id="codigo_bloque"
+                  class="form-control"
+                  [(ngModel)]="codigo_bloque" ng-click="getVarirtyByBlock()">
+            <option *ngFor="let method of blockData.data" [value]="method.codigo" >{{ method.nombre }}</option>
+          </select>
+        </td>
+        <td>
+          <select
+                  name="id_variedad"
+                  id="id_variedad"
+                  class="form-control"
+                  [(ngModel)]="codigo_variedad">
+            <option *ngFor="let method of varietyData.data" [value]="method.codigo_variedad">{{ method.nombre }}</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="form-control" value="2019-11-01" [(ngModel)]="fecha_inicio" placeholder="Fecha Inicio" aria-label="Fecha Inicio" aria-describedby="addon-wrapping">
+
+        </td>
+        <td>
+          <input type="text" class="form-control" value="2019-12-01" [(ngModel)]="fecha_fin" placeholder="Fecha Fin" aria-label="Fecha Fin" aria-describedby="addon-wrapping">
+
+        </td>
       </tr>
       <tr>
         <th colspan="4">
@@ -50,41 +60,33 @@
       </tbody>
     </table>
   </ion-card>
-
   <ion-card>
-    <table class="table" id="inform" style="display:none">
+    <table class="table" id="inform" >
       <thead>
       <tr>
-        <th scope="col">Fecha granel</th>
-        <th scope="col">Código de variedad</th>
-        <th scope="col">Cantidad de tallos</th>
-        <th scope="col">Grado</th>
-        <th scope="col">Código de bloque</th>
+        <th scope="col">FECHA DESDE</th>
+        <th scope="col">FECHA HASTA</th>
+        <th scope="col">BLOQUE</th>
+        <th scope="col">VARIEDAD</th>
+        <th scope="col">TALLOS</th>
+        <th scope="col">PRODUCTIVIDAD X PLANTA</th>
+        <th scope="col">PRODUCTIVIDAD X M2</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of inventoryData">
-        <td>{{ item.fecha_granel }}</td>
+      <tr *ngFor="let item of inventoryData.data">
+        <td>{{ item.fecha_desde }}</td>
+        <td>{{ item.fecha_hasta }}</td>
+        <td>{{ item.cod_bloque }}</td>
         <td>{{ item.codigo_variedad }}</td>
         <td>{{ item.numero_tallos }}</td>
-        <td>{{ item.grado }}</td>
-        <td>{{ item.cod_bloque }}</td>
+        <td>{{ item.productividad_planta }}</td>
+        <td>{{ item.productividad_mtrs }}</td>
+
       </tr>
       </tbody>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
+
     </table>
-    <ngb-pagination *ngIf="showPagination" [collectionSize]="totalItems" [(page)]="page"
-                    (pageChange)="loadPage($event)"></ngb-pagination>
+
   </ion-card>
-
-
-
 </ion-content>

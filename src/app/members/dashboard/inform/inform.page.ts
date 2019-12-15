@@ -12,15 +12,23 @@ import {NgbPaginationConfig} from "@ng-bootstrap/ng-bootstrap";
 })
 export class InformPage implements OnInit {
     inventoryData: any;
+    blockData: any;
+    varietyData: any;
     totalItems: number;
     page: number;
     previousPage: number;
     showPagination: boolean;
     viewDate: any;
+    codigo_bloque: any;
+    codigo_variedad: any;
+    fecha_fin: any;
+    fecha_inicio: any;
 
 
   constructor(private config: NgbPaginationConfig,private authService: AuthenticationService,public apiService: ApiService) {
       this.inventoryData = [];
+      this.blockData = [];
+      this.varietyData = [];
       this.config.boundaryLinks = true;
   }
 
@@ -28,44 +36,45 @@ export class InformPage implements OnInit {
   ngOnInit() {
       this.page =1;
       this.previousPage =1;
-
-
-
+      this.codigo_bloque='ALL';
+      this.codigo_variedad='ALL';
+      this.fecha_inicio='2019-11-01';
+      this.fecha_fin='2019-12-01';
+    this.getBlock();
+    this.getVariety();
 
   }
-    loadPage(page: number) {
-        if (page !== this.previousPage) {
-            this.previousPage = page;
-            this.getInventory(this.page-1);
-        }
-    }
-  getInventory(page:number) {
 
-    this.apiService.getList().subscribe(
+  getInventory() {
+
+    this.apiService.getInventoryFiltered(this.codigo_bloque,this.codigo_variedad,this.fecha_inicio,this.fecha_fin).subscribe(
         response => {
-
-          //this.inventoryData = response;
-          console.log(response);
-
-          if ((!response && !response.data) || (Number(response.message) ==0)) {
-            this.inventoryData = [];
-            this.showPagination = false;
-          }
-          else {
-            this.inventoryData = response.data;
-            this.totalItems =  Number(response.message);
-            this.showPagination = true;
-          }
-
+            console.log(response);
+            this.inventoryData = response;
         },
         error => {
           alert('Se produjo un error al consumir el servicio');
-
         })
-
-    var formElement = <HTMLFormElement>document.getElementById('inform');
-    formElement.style.display='block';
   }
+    getBlock() {
+        this.apiService.getBlocks().subscribe(
+            response => {
+                this.blockData = response;
+            },
+            error => {
+                alert('Se produjo un error al consumir el servicio');
+            })
+    }
+    getVariety() {
+        this.apiService.getVariety().subscribe(
+            response => {
+                this.varietyData = response;
+            },
+            error => {
+                alert('Se produjo un error al consumir el servicio');
+            })
+    }
+
   logout() {
     this.authService.logout();
   }

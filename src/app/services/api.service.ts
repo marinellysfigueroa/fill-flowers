@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Response } from '../models/response';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { Block } from '../models/block';
+import {Variety} from "../models/variety";
+import {InventoryFiltered} from "../models/inventory-filtered";
 
 
 @Injectable({
@@ -11,6 +14,9 @@ import { retry, catchError } from 'rxjs/operators';
 export class ApiService {
 
   base_path = 'https://fillcoflowers.com/restapi/v1/getInventory';
+  base_path_block = 'https://fillcoflowers.com/restapi/v1/getBlock';
+  base_path_variety = 'https://fillcoflowers.com/restapi/v1/getVariety';
+  base_path_inventory = 'https://fillcoflowers.com/restapi/v1/getInventoryFiltered';
   constructor(private http: HttpClient) { }
   httpOptions = {
     headers: new HttpHeaders({
@@ -40,4 +46,31 @@ export class ApiService {
         catchError(this.handleError)
       )
   }
+  getBlocks(): Observable<Block> {
+    return this.http
+        .get<Block>(this.base_path_block)
+        .pipe(
+            retry(2),
+            catchError(this.handleError)
+        )
+  }
+  getVariety(): Observable<Variety> {
+    return this.http
+        .get<Variety>(this.base_path_variety)
+        .pipe(
+            retry(2),
+            catchError(this.handleError)
+        )
+  }
+
+  getInventoryFiltered(codigo_bloque:string,codigo_variedad:string,fecha_inicio:string,fecha_fin:string): Observable<InventoryFiltered> {
+    return this.http
+        .get<InventoryFiltered>(this.base_path_inventory+'?codigo_bloque='+codigo_bloque+'&codigo_variedad='+codigo_variedad+'&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin)
+        .pipe(
+            retry(2),
+            catchError(this.handleError)
+        )
+  }
+
+
 }
