@@ -17,16 +17,30 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { DemoComponent } from './component';
+import {FormsModule} from "@angular/forms";
+
+
+
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,DemoComponent],
   entryComponents: [],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot(), 
+    BrowserAnimationsModule,
+    BrowserModule,
+    NgbModalModule,
+    IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
+    FormsModule,
   ],
   providers: [
     StatusBar,
@@ -35,6 +49,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     SQLite,
     SQLitePorter
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [DemoComponent]
 })
 export class AppModule {}

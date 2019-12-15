@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Inventory } from '../models/inventory';
+import { Response } from '../models/response';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
@@ -32,9 +32,9 @@ export class ApiService {
     return throwError(
       'Something bad happened; please try again later.');
   };
-  getList(): Observable<Inventory> {
+  getList(): Observable<Response> {
     return this.http
-      .get<Inventory>(this.base_path)
+      .get<Response>(this.base_path)
       .pipe(
         retry(2),
         catchError(this.handleError)

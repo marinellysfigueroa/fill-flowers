@@ -11,12 +11,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: './members/member-routing.module#MemberRoutingModule'
   },
-  {
-    path: 'developers', loadChildren: './pages/developers/developers.module#DevelopersPageModule'
-  },
-  {
-    path: 'developers/:id', loadChildren: './pages/developer/developer.module#DeveloperPageModule'
-  },
+
 ];
 
 @NgModule({

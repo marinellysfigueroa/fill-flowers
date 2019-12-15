@@ -30,32 +30,7 @@
       <ion-icon name="stats"></ion-icon>
       Para visualizar el Informe de producción, haga click en la siguiente funcionalidad.
       <br>
-      <ion-button (click)="getInventory()" color="primary" shape="round">Ver</ion-button>
+      <ion-button routerLink="inform" routerDirection="forward" shape="round">Ir</ion-button>
     </ion-card-content>
   </ion-card>
-  <ion-card>
-    <table class="table" id="inform" style="display:none"> 
-      <thead>
-        <tr>
-          <th scope="col">Fecha granel</th>
-          <th scope="col">Código de variedad</th>
-          <th scope="col">Cantidad de tallos</th>
-          <th scope="col">Grado</th>
-          <th scope="col">Código de bloque</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of inventoryData.data">
-          <td>{{ item.fecha_granel }}</td>
-          <td>{{ item.codigo_variedad }}</td>
-          <td>{{ item.numero_tallos }}</td>
-          <td>{{ item.grado }}</td>
-          <td>{{ item.cod_bloque }}</td>
-
-        </tr>
-      </tbody>
-    </table>
-  </ion-card>
- 
-  
 </ion-content>

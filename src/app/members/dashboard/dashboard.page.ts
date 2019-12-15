@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { ApiService } from '../../services/api.service';
+import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -17,12 +18,15 @@ export class DashboardPage implements OnInit {
   name_model:string = ""; // Input field model
   row_data: any = []; // Table rows
   readonly database_name:string = "fillcoflowers.db"; // DB name
-  readonly table_name:string = "inventory"; // 
+  readonly table_name:string = "inventory"; //
+
+
 
   constructor(private platform: Platform,private authService: AuthenticationService,
-    private sqlite: SQLite,public apiService: ApiService) { 
+    private sqlite: SQLite) {
       
-    this.inventoryData = [];
+
+
 /*
     this.platform.ready().then(() => {
       this.createDB();
@@ -33,33 +37,24 @@ export class DashboardPage implements OnInit {
 
   }
 
-  
-
   ngOnInit() {
-    var formElement = <HTMLFormElement>document.getElementById('inform');
-    formElement.style.display='none';
+
+
     //this.getInventory();
   }
 
-  getInventory() {
-    
-    this.apiService.getList().subscribe(response => {
-      this.inventoryData = response;
-    })
-    var formElement = <HTMLFormElement>document.getElementById('inform');
-    formElement.style.display='block';
-  }
+
+
 
   logout() {
     this.authService.logout();
   }
   download()
   {
-    var formElement = <HTMLFormElement>document.getElementById('inform');
-    formElement.style.display='none';
+
     console.log("Downloading...");
     setTimeout(() => { 
-      /* 
+      /*
       this.createDB() ;
       this.createTable() ;
       this.insertAll();
@@ -100,7 +95,7 @@ export class DashboardPage implements OnInit {
   }
   
   insertAll() {
-
+    /*
     this.apiService.getList().subscribe(response => {
       this.inventoryData = response;
     })
@@ -123,7 +118,7 @@ export class DashboardPage implements OnInit {
       });
 
     }
-    
+    */
     
   }
   getRows() {

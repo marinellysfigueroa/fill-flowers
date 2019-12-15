@@ -4,19 +4,21 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DashboardPageRoutingModule } from './dashboard-routing.module';
+import { InformPageRoutingModule } from './inform-routing.module';
 
-import { DashboardPage } from './dashboard.page';
+import { InformPage } from './inform.page';
 import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
+import {CalendarCommonModule} from "angular-calendar";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        DashboardPageRoutingModule,
+        InformPageRoutingModule,
         NgbPaginationModule,
+        CalendarCommonModule
     ],
-  declarations: [DashboardPage]
+  declarations: [InformPage]
 })
-export class DashboardPageModule {}
+export class InformPageModule {}

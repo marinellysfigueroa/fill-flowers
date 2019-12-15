@@ -1,0 +1,90 @@
+<ion-header>
+  <img src="/assets/img/logo.png" alt="logo">
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Informe de producción</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Bloque</th>
+        <th scope="col">Variedad</th>
+        <th scope="col">Fecha Incio</th>
+        <th scope="col">Fecha fin</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th><select class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select></th>
+        <td><select class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th colspan="4">
+          <ion-button (click)="getInventory()" color="primary" shape="round">Consultar</ion-button>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+  </ion-card>
+
+  <ion-card>
+    <table class="table" id="inform" style="display:none">
+      <thead>
+      <tr>
+        <th scope="col">Fecha granel</th>
+        <th scope="col">Código de variedad</th>
+        <th scope="col">Cantidad de tallos</th>
+        <th scope="col">Grado</th>
+        <th scope="col">Código de bloque</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of inventoryData">
+        <td>{{ item.fecha_granel }}</td>
+        <td>{{ item.codigo_variedad }}</td>
+        <td>{{ item.numero_tallos }}</td>
+        <td>{{ item.grado }}</td>
+        <td>{{ item.cod_bloque }}</td>
+      </tr>
+      </tbody>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </table>
+    <ngb-pagination *ngIf="showPagination" [collectionSize]="totalItems" [(page)]="page"
+                    (pageChange)="loadPage($event)"></ngb-pagination>
+  </ion-card>
+
+
+
+</ion-content>
