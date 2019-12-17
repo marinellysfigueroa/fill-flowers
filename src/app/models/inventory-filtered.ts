@@ -4,7 +4,7 @@ export class InventoryFiltered {
     codigo_variedad: string;
     numero_tallos: string;
     cod_bloque: string;
-    productividad_planta: string;
-    productividad_mtrs: string;
+    prod_planta: string;
+    prod_mtrs: string;
 
 }
