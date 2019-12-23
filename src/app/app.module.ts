@@ -16,19 +16,16 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
  
 import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { DemoComponent } from './component';
 import {FormsModule} from "@angular/forms";
 
 
 
 
+
 @NgModule({
-  declarations: [AppComponent,DemoComponent],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserAnimationsModule,
@@ -39,7 +36,6 @@ import {FormsModule} from "@angular/forms";
     IonicStorageModule.forRoot(),
     HttpClientModule,
     NgbModule,
-    CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
     FormsModule,
   ],
   providers: [
@@ -50,6 +46,6 @@ import {FormsModule} from "@angular/forms";
     SQLitePorter
   ],
   bootstrap: [AppComponent],
-  exports: [DemoComponent]
+  exports: []
 })
 export class AppModule {}

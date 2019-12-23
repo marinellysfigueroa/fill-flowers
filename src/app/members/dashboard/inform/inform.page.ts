@@ -1,78 +1,179 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../../services/authentication.service";
-import {ApiService} from "../../../services/api.service";
-import {NgbPaginationConfig} from "@ng-bootstrap/ng-bootstrap";
-
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-inform',
   templateUrl: './inform.page.html',
   styleUrls: ['./inform.page.scss'],
-    providers: [NgbPaginationConfig]
+    providers: []
 })
 export class InformPage implements OnInit {
-    inventoryData: any;
-    blockData: any;
-    varietyData: any;
-    totalItems: number;
-    page: number;
-    previousPage: number;
-    showPagination: boolean;
-    viewDate: any;
-    codigo_bloque: any;
-    codigo_variedad: any;
-    fecha_fin: any;
-    fecha_inicio: any;
+    databaseObj: SQLiteObject; // Database instance object
+    inventoryData: any=[];
+    blockData: any=[];
+    varietyData: any=[];
+    codigo_bloque: string;
+    codigo_variedad: string;
+    fecha_fin: string;
+    fecha_inicio: string;
+    readonly database_name:string = "fillco_flowers.db"; // DB name
+    readonly table_inventory:string = "inventory"; //
+    readonly table_block:string = "block"; //
+    readonly table_variety:string = "variety"; //
 
 
-  constructor(private config: NgbPaginationConfig,private authService: AuthenticationService,public apiService: ApiService) {
-      this.inventoryData = [];
-      this.blockData = [];
-      this.varietyData = [];
-      this.config.boundaryLinks = true;
+  constructor(private platform: Platform,private authService: AuthenticationService,
+              private sqlite: SQLite) {
+
+
   }
 
 
   ngOnInit() {
-      this.page =1;
-      this.previousPage =1;
+     // alert("estoy ingresando al init");
+
       this.codigo_bloque='ALL';
       this.codigo_variedad='ALL';
-      this.fecha_inicio='2019-11-01';
-      this.fecha_fin='2019-12-01';
-    this.getBlock();
-    this.getVariety();
+      this.getCurrentDate();
+      this.createDB();
 
   }
+  getCurrentDate()
+  {
+      var currentDate = new Date();
+      var day = currentDate.getDate();
+      var month_last = currentDate.getMonth() ;
+      var month = currentDate.getMonth() + 1;
+      var year = currentDate.getFullYear();
+
+      this.fecha_fin=year+"-"+month+"-"+day;
+          this.fecha_inicio=year+"-"+month_last+"-"+day;
+  }
+    createDB() {
+       // alert("ingresando a openDB");
+        this.sqlite.create({
+            name: this.database_name,
+            location: 'default'
+        })
+            .then((db: SQLiteObject) => {
+                this.databaseObj = db;
+                 this.createTableBlock();
+                 this.createTableVariety();
+
+
+            })
+            .catch(e => {
+                alert("error " + JSON.stringify(e))
+            });
+
+    }
+    createTableBlock() {
+        //alert("ingresando a createTableBlock");
+
+        this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_block + ' (id_bloque varchar(255),nombre varchar(255),codigo varchar(255))', [])
+            .then(() => {
+                this.getBlock();
+            })
+            .catch(e => {
+                alert("error " + JSON.stringify(e))
+            });
+
+    }
+    createTableVariety() {
+        //alert("ingressando a createTableVariety");
+        this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_variety + ' (codigo_variedad varchar(255),nombre varchar(255))', [])
+            .then(() => {
+                this.getVariety();
+            })
+            .catch(e => {
+                alert("error " + JSON.stringify(e))
+            });
+
+
+    }
+
 
   getInventory() {
+     // alert(this.codigo_bloque+' '+this.codigo_variedad+' '+this.fecha_inicio+' '+this.fecha_fin);
 
-    this.apiService.getInventoryFiltered(this.codigo_bloque,this.codigo_variedad,this.fecha_inicio,this.fecha_fin).subscribe(
-        response => {
-            console.log(response);
-            this.inventoryData = response;
-        },
-        error => {
-          alert('Se produjo un error al consumir el servicio');
-        })
+      var sql="select cod_bloque,codigo_variedad,variedad, sum(numero_tallos) as numero_tallos, " +
+          "sum(plants_numbers) as plants_numbers,squars_meters" +
+          " from "+this.table_inventory+"  WHERE 1=1 " +
+          "and DATE(fecha_calidad) BETWEEN '"+this.fecha_inicio+"' AND '"+this.fecha_fin+"' ";
+
+      if(this.codigo_bloque!=="ALL")
+      {
+          sql=sql +" and cod_bloque='"+this.codigo_bloque+"' ";
+      }
+
+      if(this.codigo_variedad!=="ALL")
+      {
+          sql=sql+" and codigo_variedad='"+this.codigo_variedad+"' ";
+      }
+
+      sql=sql+" GROUP BY cod_bloque,codigo_variedad,plants_numbers,squars_meters order by cod_bloque,variedad asc";
+
+     // alert(sql);
+
+
+
+      this.databaseObj.executeSql(sql , [])
+          .then((res) => {
+              this.inventoryData = [];
+             // alert(res.rows.length);
+              if (res.rows.length > 0) {
+                  for (var i = 0; i < res.rows.length; i++) {
+                      this.inventoryData.push(res.rows.item(i));
+                  }
+              }
+          })
+          .catch(e => {
+              alert("error " + JSON.stringify(e))
+          });
+
+
   }
     getBlock() {
-        this.apiService.getBlocks().subscribe(
-            response => {
-                this.blockData = response;
-            },
-            error => {
-                alert('Se produjo un error al consumir el servicio');
+      //alert("getBlock");
+    var sql="SELECT * FROM " + this.table_block;
+    //alert(sql);
+
+        this.databaseObj.executeSql(sql , [])
+            .then((res) => {
+                this.blockData = [];
+                //alert(res.rows.length);
+                if (res.rows.length > 0) {
+                    for (var i = 0; i < res.rows.length; i++) {
+                        this.blockData.push(res.rows.item(i));
+                    }
+                }
             })
+            .catch(e => {
+                alert("error " + JSON.stringify(e))
+            });
+
+
+
+
     }
     getVariety() {
-        this.apiService.getVariety().subscribe(
-            response => {
-                this.varietyData = response;
-            },
-            error => {
-                alert('Se produjo un error al consumir el servicio');
+        //alert("getVariety");
+
+        this.databaseObj.executeSql("SELECT * FROM " +this.table_variety , [])
+            .then((res) => {
+                this.varietyData = [];
+                //alert(res.rows.length);
+                if (res.rows.length > 0) {
+                    for (var i = 0; i < res.rows.length; i++) {
+                        this.varietyData.push(res.rows.item(i));
+                    }
+                }
             })
+            .catch(e => {
+                alert("error " + JSON.stringify(e))
+            });
     }
 
   logout() {

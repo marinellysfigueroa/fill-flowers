@@ -9,51 +9,60 @@
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Informe de producción</ion-title>
+    <ion-title>Informe de productividad</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ion-card>
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">BLOQUE</th>
-        <th scope="col">VARIEDAD</th>
-        <th scope="col">FECHA DESDE</th>
-        <th scope="col">FECHA HASTA</th>
-      </tr>
-      </thead>
+    <table class="table" >
+
       <tbody>
       <tr>
+        <th scope="col">BLOQUE</th>
         <td>
           <select
                   name="codigo_bloque"
                   id="codigo_bloque"
                   class="form-control"
                   [(ngModel)]="codigo_bloque" ng-click="getVarirtyByBlock()">
-            <option *ngFor="let method of blockData.data" [value]="method.codigo" >{{ method.nombre }}</option>
+            <option *ngFor="let method of blockData" [value]="method.codigo" >{{ method.nombre }}</option>
           </select>
         </td>
+      </tr>
+      <tr>
+        <th scope="col">VARIEDAD</th>
+
         <td>
           <select
                   name="id_variedad"
                   id="id_variedad"
                   class="form-control"
                   [(ngModel)]="codigo_variedad">
-            <option *ngFor="let method of varietyData.data" [value]="method.codigo_variedad">{{ method.nombre }}</option>
+            <option *ngFor="let method of varietyData" [value]="method.codigo_variedad">{{ method.nombre }}</option>
           </select>
         </td>
+
+
+      </tr>
+      <tr>
+        <th scope="col">FECHA DESDE</th>
+
         <td>
-          <input type="text" class="form-control" value="2019-11-01" [(ngModel)]="fecha_inicio" placeholder="Fecha Inicio" aria-label="Fecha Inicio" aria-describedby="addon-wrapping">
+          <input type="date" class="form-control" value="2019-11-01" [(ngModel)]="fecha_inicio" placeholder="Fecha Inicio" aria-label="Fecha Inicio" aria-describedby="addon-wrapping">
 
         </td>
+
+      </tr>
+      <tr>
+        <th scope="col">FECHA HASTA</th>
+
         <td>
-          <input type="text" class="form-control" value="2019-12-01" [(ngModel)]="fecha_fin" placeholder="Fecha Fin" aria-label="Fecha Fin" aria-describedby="addon-wrapping">
+          <input type="date" class="form-control" value="2019-12-01" [(ngModel)]="fecha_fin" placeholder="Fecha Fin" aria-label="Fecha Fin" aria-describedby="addon-wrapping">
 
         </td>
       </tr>
       <tr>
-        <th colspan="4">
+        <th colspan="2">
           <ion-button (click)="getInventory()" color="primary" shape="round">Consultar</ion-button>
         </th>
       </tr>
@@ -64,8 +73,6 @@
     <table class="table" id="inform" >
       <thead>
       <tr>
-        <th scope="col">FECHA DESDE</th>
-        <th scope="col">FECHA HASTA</th>
         <th scope="col">BLOQUE</th>
         <th scope="col">VARIEDAD</th>
         <th scope="col">TALLOS</th>
@@ -74,14 +81,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of inventoryData.data">
-        <td>{{ item.fecha_desde }}</td>
-        <td>{{ item.fecha_hasta }}</td>
+      <tr *ngFor="let item of inventoryData">
         <td>{{ item.cod_bloque }}</td>
-        <td>{{ item.codigo_variedad }}</td>
+        <td>{{ item.variedad }}</td>
         <td>{{ item.numero_tallos }}</td>
-        <td>{{ item.prod_planta }}</td>
-        <td>{{ item.prod_mtrs }}</td>
+        <td>{{ item.numero_tallos/item.plants_numbers }}</td>
+        <td>{{ item.numero_tallos/item.squars_meters }}</td>
 
       </tr>
       </tbody>
