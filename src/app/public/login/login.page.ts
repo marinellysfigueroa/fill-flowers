@@ -4,6 +4,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -22,6 +23,7 @@ export class LoginPage implements OnInit {
 
       this.platform.ready().then(() => {
           this.createDB();
+          this.createTable();
       }).catch(error => {
           console.log(error);
       });
@@ -35,6 +37,10 @@ export class LoginPage implements OnInit {
 
     if(this.correo!=="" && this.password!=="" )
     {
+        // @ts-ignore
+        setTimeout( this.createDB(), 1000);
+        // @ts-ignore
+        setTimeout( this.createTable(), 1000);
 
       console.log("Iniciando sesión");
 
@@ -72,4 +78,18 @@ export class LoginPage implements OnInit {
                 alert("error " + JSON.stringify(e))
             });
     }
+    createTable() {
+        this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_name + ' (nombre varchar(255),apellido varchar(255),correo varchar(255),password varchar(255))', [])
+            .then(() => {
+
+            })
+            .catch(e => {
+                alert("error " + JSON.stringify(e))
+            });
+    }
+    exit()
+    {
+        //console.log("Pendding")
+    }
+
 }

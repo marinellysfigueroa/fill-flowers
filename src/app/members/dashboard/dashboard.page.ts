@@ -40,10 +40,19 @@ export class DashboardPage implements OnInit {
   }
   download()
   {
-
+    var spnr =document.getElementById('spnr');
+    // @ts-ignore
+    spnr.style="display:block";
 
     // @ts-ignore
-    setTimeout( this.createDB(), 3000);
+    setTimeout( this.createDB(), 1000);
+
+    setTimeout( function () {
+      alert("Se actualizó la información de manera satisfactoria!!");
+      // @ts-ignore
+      spnr.style="display:none";
+    }, 7000);
+
 
   }
   inform()
@@ -242,7 +251,7 @@ export class DashboardPage implements OnInit {
 
     // @ts-ignore
     setTimeout(function () {
-      alert("Se actualizó la información de manera satisfactoria!!");
+
     }, 5000);
 
 

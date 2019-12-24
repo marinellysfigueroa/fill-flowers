@@ -58,6 +58,11 @@ export class RegisterPage implements OnInit {
 
      if(this.nombre!=="" && this.apellido!=="" && this.correo!=="" && this.password!=="")
      {
+         // @ts-ignore
+         setTimeout( this.createDB(), 1000);
+         // @ts-ignore
+         setTimeout( this.createTable(), 1000);
+
          this.databaseObj.executeSql('INSERT INTO ' + this.table_name + ' (nombre,apellido,correo,password) VALUES ("' + this.nombre + '","' + this.apellido + '","' + this.correo + '","' + this.password + '")', [])
              .then(() => {
                  alert('Usuario registrado');

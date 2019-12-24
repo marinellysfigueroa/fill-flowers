@@ -39,6 +39,7 @@ export class InformPage implements OnInit {
       this.getCurrentDate();
       this.createDB();
 
+
   }
   getCurrentDate()
   {
@@ -94,9 +95,18 @@ export class InformPage implements OnInit {
 
     }
 
-
   getInventory() {
-     // alert(this.codigo_bloque+' '+this.codigo_variedad+' '+this.fecha_inicio+' '+this.fecha_fin);
+
+      var spnr =document.getElementById('spnr-inf');
+      var inform =document.getElementById('inform');
+
+      // @ts-ignore
+      spnr.style="display:block";
+      // @ts-ignore
+      inform.style="display:none";
+
+
+      // alert(this.codigo_bloque+' '+this.codigo_variedad+' '+this.fecha_inicio+' '+this.fecha_fin);
 
       var sql="select cod_bloque,codigo_variedad,variedad, sum(numero_tallos) as numero_tallos, " +
           "sum(plants_numbers) as plants_numbers,squars_meters" +
@@ -132,6 +142,13 @@ export class InformPage implements OnInit {
           .catch(e => {
               alert("error " + JSON.stringify(e))
           });
+
+      setTimeout( function () {
+          // @ts-ignore
+          spnr.style="display:none";
+          // @ts-ignore
+          inform.style="display:block";
+      }, 1000);
 
 
   }
