@@ -109,7 +109,7 @@ export class InformPage implements OnInit {
       // alert(this.codigo_bloque+' '+this.codigo_variedad+' '+this.fecha_inicio+' '+this.fecha_fin);
 
       var sql="select cod_bloque,codigo_variedad,variedad, sum(numero_tallos) as numero_tallos, " +
-          "sum(plants_numbers) as plants_numbers,squars_meters" +
+          " plants_numbers,squars_meters" +
           " from "+this.table_inventory+"  WHERE 1=1 " +
           "and DATE(fecha_calidad) BETWEEN '"+this.fecha_inicio+"' AND '"+this.fecha_fin+"' ";
 

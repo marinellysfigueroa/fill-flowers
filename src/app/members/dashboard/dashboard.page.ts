@@ -26,12 +26,12 @@ export class DashboardPage implements OnInit {
   }
 
   ngOnInit() {
-    // @ts-ignore
-    setTimeout( this.getBlocks(), 1000);
-    // @ts-ignore
-    setTimeout( this.getVariety(), 1000);
-    // @ts-ignore
-    setTimeout( this.getInventory(), 1000);
+
+    this.createDB();
+    this.getBlocks();
+    this.getVariety();
+    this.getInventory();
+
 
   }
 
@@ -44,14 +44,33 @@ export class DashboardPage implements OnInit {
     // @ts-ignore
     spnr.style="display:block";
 
+    //delete all rows
     // @ts-ignore
-    setTimeout( this.createDB(), 1000);
+    setTimeout( this.deleteTable(this.table_inventory), 1000);
+    // @ts-ignore
+    setTimeout( this.deleteTable(this.table_variety), 1000);
+    // @ts-ignore
+    setTimeout( this.deleteTable(this.table_block), 1000);
+
+    // @ts-ignore
+    setTimeout( this.getBlocks(), 1000);
+    // @ts-ignore
+    setTimeout( this.getVariety(), 1000);
+    // @ts-ignore
+    setTimeout( this.getInventory(), 1000);
+
+    // @ts-ignore
+    setTimeout( this.insertBlock(), 1000);
+    // @ts-ignore
+    setTimeout( this.insertVariety(), 1000);
+    // @ts-ignore
+    setTimeout( this.insertInventory(), 1000);
 
     setTimeout( function () {
       alert("Se actualizó la información de manera satisfactoria!!");
       // @ts-ignore
       spnr.style="display:none";
-    }, 7000);
+    }, 10000);
 
 
   }
@@ -68,10 +87,12 @@ export class DashboardPage implements OnInit {
       .then((db: SQLiteObject) => {
         this.databaseObj = db;
         //alert(this.database_name +' Database Created!');
-
         // @ts-ignore
         setTimeout(this.createTableBlock(), 1000);
-
+        // @ts-ignore
+        setTimeout(this.createTableVariety(), 1000);
+        // @ts-ignore
+        setTimeout(this.createTableInventory(), 1000);
       })
       .catch(e => {
         alert("error " + JSON.stringify(e))
@@ -84,16 +105,10 @@ export class DashboardPage implements OnInit {
     this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_block + ' (id_bloque varchar(255),nombre varchar(255),codigo varchar(255))', [])
       .then(() => {
         //alert('Table Block Created!');
-        // @ts-ignore
-        setTimeout(this.createTableVariety(), 1000);
-
       })
       .catch(e => {
         alert("error " + JSON.stringify(e))
       });
-
-
-
   }
 
   createTableInventory() {
@@ -104,53 +119,37 @@ export class DashboardPage implements OnInit {
         'plants_numbers varchar(255),squars_meters varchar(255),prod_planta varchar(255),prod_mtrs varchar(255))', [])
         .then(() => {
           //alert('Table Inventory Created!');
-          // @ts-ignore
-          setTimeout(this.insertBlock(), 1000);
+
         })
         .catch(e => {
           alert("error " + JSON.stringify(e))
         });
-
-
-
   }
   createTableVariety() {
     //alert("ingressando a createTableVariety");
     this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_variety + ' (codigo_variedad varchar(255),nombre varchar(255))', [])
         .then(() => {
           //alert('Table Variety Created!');
-          // @ts-ignore
-          setTimeout(this.createTableInventory(), 1000);
-
         })
         .catch(e => {
           alert("error " + JSON.stringify(e))
         });
-
-
    }
   getBlocks()
   {
+
     this.apiService.getBlocks().subscribe(
         response => {
-
           this.blockData = response['data'];
         },
         error => {
           alert('Se produjo un error al consumir el servicio');
         });
-
-
-
   }
 
   insertBlock() {
-    // @ts-ignore
-    setTimeout( this.deleteTable(this.table_block), 1000);
 
-    // @ts-ignore
-    setTimeout( this.getBlocks(), 1000);
-
+    //alert("block "+this.blockData.length);
 
     for (var i = 0; i < this.blockData.length; i++) {
 
@@ -169,27 +168,19 @@ export class DashboardPage implements OnInit {
           });
     }
 
-    // @ts-ignore
-    setTimeout( this.insertVariety(), 3000);
+
   }
   getVariety()
   {
+
     this.apiService.getVariety().subscribe(response => {
       this.varietyData = response['data'];
+      //alert(this.varietyData.length);
     })
-
   }
 
   insertVariety() {
-    // @ts-ignore
-    setTimeout( this.deleteTable(this.table_variety), 1000);
-
-    // @ts-ignore
-    setTimeout( this.getVariety(), 1000);
-
-
-   //alert(this.varietyData.length);
-
+    //alert("variety" +this.varietyData.length);
     for (var i = 0; i < this.varietyData.length; i++) {
       var codigo_variedad=this.varietyData[i].codigo_variedad;
       var nombre=this.varietyData[i].nombre;
@@ -201,26 +192,19 @@ export class DashboardPage implements OnInit {
           .catch(e => {
             alert("error " + JSON.stringify(e))
           });
-
     }
-
-    // @ts-ignore
-    setTimeout(this.insertInventory(), 2000);
-
-
   }
   getInventory()
   {
+
     this.apiService.getList().subscribe(response => {
       this.inventoryData = response['data'];
+
     })
   }
   
   insertInventory() {
-    // @ts-ignore
-    setTimeout( this.deleteTable(this.table_inventory), 1000);
-    // @ts-ignore
-    setTimeout( this.getInventory, 1000);
+   //alert("inventory"+this.inventoryData.lengthf);
 
     for (var i = 0; i < this.inventoryData.length; i++) {
 
@@ -234,44 +218,29 @@ export class DashboardPage implements OnInit {
       var prod_planta=this.inventoryData[i].prod_planta;
       var prod_mtrs=this.inventoryData[i].prod_mtrs;
 
-
       var sql="INSERT INTO "+this.table_inventory+" (fecha_calidad,codigo_variedad,variedad,cod_bloque,numero_tallos,plants_numbers,squars_meters,prod_planta,prod_mtrs) VALUES ('"+fecha_calidad+"','"+codigo_variedad+"','"+variedad+"'," +
           "'"+cod_bloque+"','"+numero_tallos+"','"+plants_numbers+"','"+squars_meters+"','"+prod_planta+"','"+prod_mtrs+"');";
 
       this.databaseObj.executeSql(sql, [])
       .then(() => {
 
-
       })
       .catch(e => {
         alert("error " + JSON.stringify(e))
       });
-
     }
-
-    // @ts-ignore
-    setTimeout(function () {
-
-    }, 5000);
-
-
   }
 
   deleteTable(table:string)
   {
-
     var sql="DELETE FROM "+table;
 
     this.databaseObj.executeSql(sql, [])
         .then(() => {
        // alert("row deletes of table "+table);
-
         })
         .catch(e => {
           alert("error " + JSON.stringify(e))
         });
-
   }
-
-
 }
